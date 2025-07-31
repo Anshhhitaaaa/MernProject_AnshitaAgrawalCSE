@@ -1,0 +1,198 @@
+/* Portfolio Page Custom Styles */
+
+@keyframes blob {
+  0% {
+    transform: translate(0px, 0px) scale(1);
+  }
+  33% {
+    transform: translate(30px, -50px) scale(1.1);
+  }
+  66% {
+    transform: translate(-20px, 20px) scale(0.9);
+  }
+  100% {
+    transform: translate(0px, 0px) scale(1);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animateBlob {
+  animation: blob 7s infinite;
+}
+
+.animationDelay2000 {
+  animation-delay: 2s;
+}
+
+.animationDelay4000 {
+  animation-delay: 4s;
+}
+
+.animationDelay1000 {
+  animation-delay: 1s;
+}
+
+.fadeInUp {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.slideInLeft {
+  animation: slideInLeft 0.6s ease-out;
+}
+
+.slideInRight {
+  animation: slideInRight 0.6s ease-out;
+}
+
+/* Line clamp utility for text truncation */
+.lineClamp3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Custom scrollbar */
+.customScrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.customScrollbar::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 3px;
+}
+
+.customScrollbar::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, #3b82f6, #8b5cf6);
+  border-radius: 3px;
+}
+
+.customScrollbar::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to bottom, #2563eb, #7c3aed);
+}
+
+/* Hover effects */
+.hoverLift {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hoverLift:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Gradient text animation */
+.gradientText {
+  background: linear-gradient(-45deg, #3b82f6, #8b5cf6, #ec4899, #3b82f6);
+  background-size: 400% 400%;
+  animation: gradientShift 3s ease infinite;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Skill bar animation */
+.skillBar {
+  transition: width 1s ease-out;
+}
+
+/* Project card hover effects */
+.projectCard {
+  transition: all 0.3s ease;
+}
+
+.projectCard:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+/* Timeline animations */
+.timelineItem {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: timelineFadeIn 0.6s ease-out forwards;
+}
+
+.timelineItem:nth-child(1) { animation-delay: 0.1s; }
+.timelineItem:nth-child(2) { animation-delay: 0.2s; }
+.timelineItem:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes timelineFadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Contact form animations */
+.formField {
+  transition: all 0.3s ease;
+}
+
+.formField:focus-within {
+  transform: scale(1.02);
+}
+
+/* Social media hover effects */
+.socialLink {
+  transition: all 0.3s ease;
+}
+
+.socialLink:hover {
+  transform: translateY(-3px) scale(1.1);
+}
+
+/* Responsive animations */
+@media (max-width: 768px) {
+  .animateBlob {
+    animation: none;
+  }
+  
+  .projectCard:hover {
+    transform: none;
+  }
+} 
