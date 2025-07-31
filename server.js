@@ -24,41 +24,77 @@ if (process.env.NODE_ENV === 'development' && !process.env.MONGODB_URI.includes(
   // Setup mock data and routes that don't require database
   app.use('/api/auth/login', (req, res) => {
     // Mock login response
-    res.status(200).json({
-      success: true,
-      token: 'mock-jwt-token',
-      data: {
-        _id: '123456789',
-        name: 'Test User',
-        email: req.body.email || 'test@example.com',
-        role: 'student'
-      }
-    });
+    const { email, password } = req.body;
+    
+    // Basic validation
+    if (!email || !password) {
+      return res.status(400).json({ success: false, message: 'Please provide email and password' });
+    }
+    
+    // Mock credentials check
+    if (email === 'test@example.com' && password === 'password123') {
+      return res.status(200).json({
+        success: true,
+        token: 'mock-jwt-token',
+        user: {
+          id: '123456789',
+          firstName: 'Test',
+          lastName: 'User',
+          email: email,
+          role: 'user'
+        }
+      });
+    } else {
+      return res.status(401).json({ success: false, message: 'Invalid credentials' });
+    }
   });
   
   app.use('/api/auth/register', (req, res) => {
     // Mock register response
+    const { firstName, lastName, email, password } = req.body;
+    
+    // Basic validation
+    if (!firstName || !lastName || !email || !password) {
+      return res.status(400).json({ success: false, message: 'Please provide all required fields' });
+    }
+    
+    // Mock email check
+    if (email === 'test@example.com') {
+      return res.status(400).json({ success: false, message: 'Email already registered' });
+    }
+    
     res.status(201).json({
       success: true,
       token: 'mock-jwt-token',
-      data: {
-        _id: '123456789',
-        name: req.body.name || 'New User',
-        email: req.body.email || 'newuser@example.com',
-        role: 'student'
+      user: {
+        id: '123456789',
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        role: 'user'
       }
     });
   });
   
   app.use('/api/auth/me', (req, res) => {
+    // Check for authorization header
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return res.status(401).json({
+        success: false,
+        message: 'Not authorized to access this route'
+      });
+    }
+    
     // Mock user data response
     res.status(200).json({
       success: true,
       data: {
         _id: '123456789',
-        name: 'Test User',
+        firstName: 'Test',
+        lastName: 'User',
         email: 'test@example.com',
-        role: 'student'
+        role: 'user'
       }
     });
   });

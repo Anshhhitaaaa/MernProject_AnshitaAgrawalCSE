@@ -1,4 +1,4 @@
-# UpgenZ Learning Platform
+# MERN Stack Learning Platform
 
 A full-stack learning platform built with the MERN stack (MongoDB, Express, React, Node.js).
 
@@ -99,21 +99,6 @@ Start the server:
 ```
 npm run server
 ```
-
-### GitHub Deployment
-
-This project is configured for deployment on GitHub Pages for the frontend.
-
-1. Create a GitHub repository and push your code
-
-2. The GitHub Actions workflow will automatically build and deploy your application to GitHub Pages when you push to the main branch.
-
-3. For the backend, you can deploy to platforms like Heroku, Render, or Railway with the following environment variables:
-   - `MONGODB_URI`: Your MongoDB Atlas connection string
-   - `JWT_SECRET`: Your JWT secret key
-   - `NODE_ENV`: Set to "production"
-
-4. Update the API endpoints in the frontend code to point to your deployed backend.
 
 ## API Endpoints
 

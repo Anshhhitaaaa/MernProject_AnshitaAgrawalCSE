@@ -1,6 +1,5 @@
 import React, { createContext, useState, useContext } from 'react';
 import { AuthContext } from './AuthContext';
-import config from '../config.js';
 
 export const CourseContext = createContext();
 
@@ -18,7 +17,7 @@ export const CourseProvider = ({ children }) => {
     setError(null);
 
     try {
-      const response = await fetch(`${config.apiUrl}/courses${query}`);
+      const response = await fetch(`http://localhost:5000/api/courses${query}`);
       const data = await response.json();
 
       if (data.success) {
@@ -43,7 +42,7 @@ export const CourseProvider = ({ children }) => {
     setError(null);
 
     try {
-      const response = await fetch(`${config.apiUrl}/courses/${id}`);
+      const response = await fetch(`http://localhost:5000/api/courses/${id}`);
       const data = await response.json();
 
       if (data.success) {
@@ -100,7 +99,7 @@ export const CourseProvider = ({ children }) => {
     setError(null);
 
     try {
-      const response = await fetch(`${config.apiUrl}/courses/${courseId}/enroll`, {
+      const response = await fetch(`http://localhost:5000/api/courses/${courseId}/enroll`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`
@@ -133,7 +132,7 @@ export const CourseProvider = ({ children }) => {
     setError(null);
 
     try {
-      const response = await fetch(`${config.apiUrl}/courses/${courseId}/ratings`, {
+      const response = await fetch(`http://localhost:5000/api/courses/${courseId}/ratings`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -172,7 +171,7 @@ export const CourseProvider = ({ children }) => {
     setError(null);
 
     try {
-      const response = await fetch(`${config.apiUrl}/courses`, {
+      const response = await fetch('http://localhost:5000/api/courses', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

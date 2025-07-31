@@ -1,16 +1,33 @@
 "use client";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { InputField } from "./InputField";
 import { SocialLoginButtons } from "./SocialLoginButtons";
+import { AuthContext } from "../context/AuthContext";
 
 export const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [serverError, setServerError] = useState("");
+  const { login, loading } = useContext(AuthContext);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle login logic here
-    console.log("Login attempt:", { email, password });
+    setServerError(""); // Clear previous errors
+    
+    if (!email || !password) {
+      setServerError("Please enter both email and password");
+      return;
+    }
+    
+    try {
+      const result = await login(email, password);
+      if (!result.success) {
+        setServerError(result.message || "Login failed");
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      setServerError("Server error. Please try again later.");
+    }
   };
 
   return (
@@ -49,12 +66,20 @@ export const LoginForm = () => {
           </button>
         </div>
 
+        {/* Server Error Message */}
+        {serverError && (
+          <div className="text-red-500 text-sm font-medium mb-4">
+            {serverError}
+          </div>
+        )}
+        
         <button
           type="submit"
           className="flex justify-center items-center mx-0 my-10 h-16 bg-fuchsia-300 rounded-2xl border border-indigo-400 border-solid shadow-2xl w-[586px] max-md:w-full max-sm:h-[50px] hover:bg-fuchsia-400 transition-colors"
+          disabled={loading}
         >
           <span className="text-3xl text-white max-sm:text-2xl">
-            Log in
+            {loading ? "Logging in..." : "Log in"}
           </span>
         </button>
       </form>
