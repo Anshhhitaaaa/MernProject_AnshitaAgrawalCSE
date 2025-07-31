@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Login API</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .result {
+      margin-top: 20px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background-color: #f9f9f9;
+      white-space: pre-wrap;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+    button {
+      padding: 10px 15px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-right: 10px;
+      margin-bottom: 10px;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    .console-log {
+      margin-top: 20px;
+      padding: 10px;
+      border: 1px solid #333;
+      border-radius: 5px;
+      background-color: #f0f0f0;
+      white-space: pre-wrap;
+      max-height: 200px;
+      overflow-y: auto;
+      font-family: monospace;
+    }
+    .error {
+      color: red;
+    }
+    .success {
+      color: green;
+    }
+    .section {
+      margin-bottom: 30px;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Test Login API</h1>
+  <p>This page tests the login API to help diagnose CORS and network issues.</p>
+  
+  <div class="section">
+    <h2>1. Test with localhost URL</h2>
+    <button onclick="testLoginLocal()">Test Login (localhost)</button>
+    <div id="resultLocal" class="result">Results will appear here...</div>
+  </div>
+
+  <div class="section">
+    <h2>2. Test with IP Address URL</h2>
+    <button onclick="testLoginIP()">Test Login (IP Address)</button>
+    <div id="resultIP" class="result">Results will appear here...</div>
+  </div>
+
+  <div class="section">
+    <h2>3. Test with Fetch Options</h2>
+    <button onclick="testWithCredentials()">Test with credentials</button>
+    <button onclick="testWithoutCredentials()">Test without credentials</button>
+    <div id="resultCredentials" class="result">Results will appear here...</div>
+  </div>
+
+  <div class="section">
+    <h2>4. Network Diagnostics</h2>
+    <button onclick="pingServer()">Ping Server</button>
+    <button onclick="checkCORS()">Check CORS Headers</button>
+    <div id="resultDiagnostics" class="result">Results will appear here...</div>
+  </div>
+
+  <div class="section">
+    <h2>Browser Console</h2>
+    <div id="consoleLog" class="console-log">Console logs will appear here...</div>
+  </div>
+
+  <script>
+    // Custom console logger
+    const consoleDiv = document.getElementById('consoleLog');
+    const originalConsole = {
+      log: console.log,
+      error: console.error,
+      warn: console.warn
+    };
+
+    console.log = function(...args) {
+      originalConsole.log(...args);
+      const message = args.map(arg => typeof arg === 'object' ? JSON.stringify(arg, null, 2) : arg).join(' ');
+      appendToConsole(message);
+    };
+
+    console.error = function(...args) {
+      originalConsole.error(...args);
+      const message = args.map(arg => typeof arg === 'object' ? JSON.stringify(arg, null, 2) : arg).join(' ');
+      appendToConsole(message, 'error');
+    };
+
+    console.warn = function(...args) {
+      originalConsole.warn(...args);
+      const message = args.map(arg => typeof arg === 'object' ? JSON.stringify(arg, null, 2) : arg).join(' ');
+      appendToConsole(message, 'warn');
+    };
+
+    function appendToConsole(message, type = 'log') {
+      const line = document.createElement('div');
+      line.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+      if (type === 'error') line.className = 'error';
+      if (type === 'warn') line.className = 'warn';
+      if (type === 'success') line.className = 'success';
+      consoleDiv.appendChild(line);
+      consoleDiv.scrollTop = consoleDiv.scrollHeight;
+    }
+
+    // Test functions
+    async function testLoginLocal() {
+      const resultDiv = document.getElementById('resultLocal');
+      resultDiv.textContent = 'Testing...';
+      console.log('Testing login with localhost URL');
+      
+      try {
+        const response = await fetch('http://localhost:5000/api/auth/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            email: 'test@example.com',
+            password: 'password123'
+          })
+        });
+        
+        console.log('Response status:', response.status);
+        console.log('Response headers:', [...response.headers.entries()]);
+        
+        const data = await response.json();
+        console.log('Response data:', data);
+        resultDiv.textContent = JSON.stringify(data, null, 2);
+        appendToConsole('Login with localhost successful!', 'success');
+      } catch (error) {
+        console.error('Error with localhost login:', error);
+        resultDiv.textContent = `Error: ${error.message}`;
+      }
+    }
+
+    async function testLoginIP() {
+      const resultDiv = document.getElementById('resultIP');
+      resultDiv.textContent = 'Testing...';
+      console.log('Testing login with IP address URL');
+      
+      try {
+        const response = await fetch('http://10.72.29.212:5000/api/auth/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            email: 'test@example.com',
+            password: 'password123'
+          })
+        });
+        
+        console.log('Response status:', response.status);
+        console.log('Response headers:', [...response.headers.entries()]);
+        
+        const data = await response.json();
+        console.log('Response data:', data);
+        resultDiv.textContent = JSON.stringify(data, null, 2);
+        appendToConsole('Login with IP address successful!', 'success');
+      } catch (error) {
+        console.error('Error with IP address login:', error);
+        resultDiv.textContent = `Error: ${error.message}`;
+      }
+    }
+
+    async function testWithCredentials() {
+      const resultDiv = document.getElementById('resultCredentials');
+      resultDiv.textContent = 'Testing with credentials...';
+      console.log('Testing login with credentials included');
+      
+      try {
+        const response = await fetch('http://10.72.29.212:5000/api/auth/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          credentials: 'include',
+          body: JSON.stringify({
+            email: 'test@example.com',
+            password: 'password123'
+          })
+        });
+        
+        console.log('Response status:', response.status);
+        console.log('Response headers:', [...response.headers.entries()]);
+        
+        const data = await response.json();
+        console.log('Response data:', data);
+        resultDiv.textContent = 'With credentials: ' + JSON.stringify(data, null, 2);
+        appendToConsole('Login with credentials successful!', 'success');
+      } catch (error) {
+        console.error('Error with credentials login:', error);
+        resultDiv.textContent = `With credentials error: ${error.message}`;
+      }
+    }
+
+    async function testWithoutCredentials() {
+      const resultDiv = document.getElementById('resultCredentials');
+      const currentText = resultDiv.textContent;
+      resultDiv.textContent = currentText + '\n\nTesting without credentials...';
+      console.log('Testing login without credentials');
+      
+      try {
+        const response = await fetch('http://10.72.29.212:5000/api/auth/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          credentials: 'omit',
+          body: JSON.stringify({
+            email: 'test@example.com',
+            password: 'password123'
+          })
+        });
+        
+        console.log('Response status:', response.status);
+        console.log('Response headers:', [...response.headers.entries()]);
+        
+        const data = await response.json();
+        console.log('Response data:', data);
+        resultDiv.textContent = currentText + '\n\nWithout credentials: ' + JSON.stringify(data, null, 2);
+        appendToConsole('Login without credentials successful!', 'success');
+      } catch (error) {
+        console.error('Error without credentials login:', error);
+        resultDiv.textContent = currentText + `\n\nWithout credentials error: ${error.message}`;
+      }
+    }
+
+    async function pingServer() {
+      const resultDiv = document.getElementById('resultDiagnostics');
+      resultDiv.textContent = 'Pinging server...';
+      console.log('Pinging server');
+      
+      try {
+        const startTime = performance.now();
+        const response = await fetch('http://10.72.29.212:5000/', {
+          method: 'GET',
+          cache: 'no-cache'
+        });
+        const endTime = performance.now();
+        const pingTime = endTime - startTime;
+        
+        const text = await response.text();
+        console.log('Ping response:', text);
+        console.log('Ping time:', pingTime.toFixed(2), 'ms');
+        
+        resultDiv.textContent = `Server responded in ${pingTime.toFixed(2)}ms with: ${text}`;
+        appendToConsole(`Server ping successful: ${pingTime.toFixed(2)}ms`, 'success');
+      } catch (error) {
+        console.error('Error pinging server:', error);
+        resultDiv.textContent = `Ping error: ${error.message}`;
+      }
+    }
+
+    async function checkCORS() {
+      const resultDiv = document.getElementById('resultDiagnostics');
+      const currentText = resultDiv.textContent;
+      resultDiv.textContent = currentText + '\n\nChecking CORS headers...';
+      console.log('Checking CORS headers');
+      
+      try {
+        const response = await fetch('http://10.72.29.212:5000/api/auth/login', {
+          method: 'OPTIONS',
+          headers: {
+            'Origin': window.location.origin,
+            'Access-Control-Request-Method': 'POST',
+            'Access-Control-Request-Headers': 'Content-Type'
+          }
+        });
+        
+        const corsHeaders = {
+          'Access-Control-Allow-Origin': response.headers.get('Access-Control-Allow-Origin'),
+          'Access-Control-Allow-Methods': response.headers.get('Access-Control-Allow-Methods'),
+          'Access-Control-Allow-Headers': response.headers.get('Access-Control-Allow-Headers'),
+          'Access-Control-Allow-Credentials': response.headers.get('Access-Control-Allow-Credentials')
+        };
+        
+        console.log('CORS headers:', corsHeaders);
+        resultDiv.textContent = currentText + '\n\nCORS Headers:\n' + JSON.stringify(corsHeaders, null, 2);
+        appendToConsole('CORS check completed', 'success');
+      } catch (error) {
+        console.error('Error checking CORS:', error);
+        resultDiv.textContent = currentText + `\n\nCORS check error: ${error.message}`;
+      }
+    }
+  </script>
+</body>
+</html>
