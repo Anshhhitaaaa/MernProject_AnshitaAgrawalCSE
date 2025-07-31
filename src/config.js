@@ -11,6 +11,6 @@ const NETWORK_API_URL = 'http://10.72.29.212:5000';
 // You can change this manually based on your needs
 // Use LOCAL_API_URL when testing on the same machine
 // Use NETWORK_API_URL when accessing from other devices
-const API_BASE_URL = NETWORK_API_URL; // Change to LOCAL_API_URL if needed
+const API_BASE_URL = LOCAL_API_URL; // Changed from NETWORK_API_URL to LOCAL_API_URL
 
 export default API_BASE_URL;

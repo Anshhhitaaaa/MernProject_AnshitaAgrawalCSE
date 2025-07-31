@@ -17,8 +17,7 @@ export const AuthProvider = ({ children }) => {
           const response = await fetch(`${API_BASE_URL}/api/auth/me`, {
             headers: {
               Authorization: `Bearer ${token}`
-            },
-            credentials: 'include'
+            }
           });
 
           const data = await response.json();
@@ -53,7 +52,6 @@ export const AuthProvider = ({ children }) => {
         headers: {
           'Content-Type': 'application/json'
         },
-        credentials: 'include',
         body: JSON.stringify(userData)
       });
 
@@ -88,7 +86,6 @@ export const AuthProvider = ({ children }) => {
         headers: {
           'Content-Type': 'application/json'
         },
-        credentials: 'include',
         body: JSON.stringify({ email, password })
       });
 
@@ -131,7 +128,6 @@ export const AuthProvider = ({ children }) => {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`
         },
-        credentials: 'include',
         body: JSON.stringify(userData)
       });
 
@@ -165,7 +161,6 @@ export const AuthProvider = ({ children }) => {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`
         },
-        credentials: 'include',
         body: JSON.stringify({ currentPassword, newPassword })
       });
 
