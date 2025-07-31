@@ -1,4 +1,5 @@
 import React, { createContext, useState, useEffect } from 'react';
+import API_BASE_URL from '../config.js';
 
 export const AuthContext = createContext();
 
@@ -13,7 +14,7 @@ export const AuthProvider = ({ children }) => {
     const checkLoggedIn = async () => {
       if (token) {
         try {
-          const response = await fetch('http://localhost:5000/api/auth/me', {
+          const response = await fetch(`${API_BASE_URL}/api/auth/me`, {
             headers: {
               Authorization: `Bearer ${token}`
             }
@@ -46,7 +47,7 @@ export const AuthProvider = ({ children }) => {
     setError(null);
 
     try {
-      const response = await fetch('http://localhost:5000/api/auth/register', {
+      const response = await fetch(`${API_BASE_URL}/api/auth/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -80,7 +81,7 @@ export const AuthProvider = ({ children }) => {
     setError(null);
 
     try {
-      const response = await fetch('http://localhost:5000/api/auth/login', {
+      const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -121,7 +122,7 @@ export const AuthProvider = ({ children }) => {
     setError(null);
 
     try {
-      const response = await fetch('http://localhost:5000/api/auth/updatedetails', {
+      const response = await fetch(`${API_BASE_URL}/api/auth/updatedetails`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -154,7 +155,7 @@ export const AuthProvider = ({ children }) => {
     setError(null);
 
     try {
-      const response = await fetch('http://localhost:5000/api/auth/updatepassword', {
+      const response = await fetch(`${API_BASE_URL}/api/auth/updatepassword`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
